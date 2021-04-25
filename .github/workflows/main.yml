@@ -7,7 +7,7 @@ on:
   push:
     branches: [ main ]
   schedule:
-    - cron: '0 0 */3 * *'
+    - cron: '0 0 */2 * *'
 
 jobs:
   build:
@@ -34,6 +34,22 @@ jobs:
     - name: Run `get_games.py`
       run: |
         python get_games.py
+        
+    - name: Run `check_and_send_email.py`
+      run: |
+        python check_and_send_email.py   
+    
+    - name: Push changes to repo
+      uses: actions-x/commit@v2
+      with:
+        email: ${{ secrets.EMAIL_HOST_USER }}
+        name: GitHub Actions Auto committer
+        branch: main
+        files: new_games.csv old_games.csv 
+        repository: https://github.com/behnambm/auto-email-epicgames
+        token: ${{ secrets.GITHUB_TOKEN }}
+#         force: true
+        
         
         
         
