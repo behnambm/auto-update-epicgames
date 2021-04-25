@@ -38,7 +38,11 @@ jobs:
     - name: Run `check_and_send_email.py`
       run: |
         python check_and_send_email.py   
-    
+      env:
+        EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+        RECEIVER: ${{ secrets.RECEIVER }}
+          
     - name: Push changes to repo
       uses: actions-x/commit@v2
       with:
