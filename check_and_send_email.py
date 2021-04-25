@@ -75,5 +75,11 @@ if send_email:
             server.sendmail(EMAIL_HOST_USER, RECEIVER, msg.as_string())
             server.close()
 
+        # update `old_games.csv` 
+        with open('old_games.csv', 'w') as f:
+            csv_writer = csv.writer(f)
+            for game in new_games:
+                csv_writer.writerow(game)
+
     except Exception as e:
         print(e)
