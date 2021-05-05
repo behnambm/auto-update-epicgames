@@ -44,11 +44,11 @@ jobs:
     - name: Push changes to repo
       uses: actions-x/commit@v2
       with:
-        email: ${{ secrets.EMAIL_HOST_USER }}
+        email: behnam.mohamadzadeh21@gmail.com
         name: GitHub Actions Auto committer
         branch: main
         files: new_games.csv old_games.csv 
-        repository: https://github.com/behnambm/auto-email-epicgames
+        repository: https://github.com/behnambm/auto-update-epicgames
         token: ${{ secrets.GITHUB_TOKEN }}
 #         force: true
         
