@@ -25,8 +25,9 @@ try:
         status_text = status_tag.get_attribute('aria-label')
         if 'Free Now' in status_text: 
             game_name = element.find_element_by_css_selector('.css-2ucwu').text
+            free_until = element.find_element_by_css_selector('.css-os6fbq').text.split(' - ')[1]
             game_link = status_tag.get_attribute('href')
-            game_list.append([game_name, game_link])             
+            game_list.append([game_name, game_link, free_until])             
 
 
     # write to csv file if there are new games
