@@ -23,7 +23,7 @@ try:
     for element in elements:
         status_tag = element.find_element_by_tag_name('a')
         status_text = status_tag.get_attribute('aria-label')
-        if 'Free Now' in status_text: 
+        if status_text and 'Free Now' in status_text: 
             game_name = element.find_element_by_css_selector('.css-2ucwu').text
             free_until = element.find_element_by_css_selector('.css-os6fbq').text.split(' - ')[1]
             game_link = status_tag.get_attribute('href')
