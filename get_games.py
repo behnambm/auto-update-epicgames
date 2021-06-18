@@ -18,13 +18,13 @@ try:
         EC.presence_of_element_located((By.CSS_SELECTOR, '.css-7z9jo1-OfferCard__content'))
     )
 
-    elements = driver.find_elements_by_css_selector('.css-53yrcz-CardGridDesktopLandscape__cardWrapperDesktop')
-    
+    elements = driver.find_elements_by_xpath('/html/body/div[1]/div/div[4]/main/div[2]/div[3]/div/div/div/div[2]/span/div/div/section/div/div')
+
     game_list = []    
     for element in elements:
-        status_tag = element.find_element_by_tag_name('a')
         try:
-            status_text = element.find_element_by_css_selector('span.css-os6fbq')
+            status_tag = element.find_element_by_tag_name('a')
+            status_text = status_tag.find_element_by_css_selector('span.css-os6fbq')
         except NoSuchElementException:
             continue
         if status_text and 'Free Now' in status_text.text: 
