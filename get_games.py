@@ -15,10 +15,10 @@ driver.get(url)
 
 try:
     WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[4]/main/div[2]/div[3]/div/div/div/div[2]/span/div/div/section/div/div[1]'))
+        EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[4]/main/div[3]/div/div/div/div/div[2]/span/div/div/section/div/div[1]'))
     )
 
-    elements = driver.find_elements_by_xpath('/html/body/div[1]/div/div[4]/main/div[2]/div[3]/div/div/div/div[2]/span/div/div/section/div/div')
+    elements = driver.find_elements_by_xpath('/html/body/div[1]/div/div[4]/main/div[3]/div/div/div/div/div[2]/span/div/div/section/div/div')
 
     game_list = []    
     for element in elements:
