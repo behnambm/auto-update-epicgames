@@ -40,9 +40,9 @@ jobs:
         python update_channel.py   
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-
+        
     - name: Push changes to repo
-      uses: actions-x/commit@v2.9
+      uses: github-actions-x/commit@v2.9
       with:
         email: behnam.mohamadzadeh21@gmail.com
         name: GitHub Actions Auto committer
