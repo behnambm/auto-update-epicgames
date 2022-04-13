@@ -42,7 +42,9 @@ jobs:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
     
     - name: Make dir safe
-      run: git config --global --add safe.directory /github 
+      run: |
+        git config --global --add safe.directory /github 
+        git config --global --add safe.directory /github/workspace 
 
     - name: Push changes to repo
       uses: actions-x/commit@v2
