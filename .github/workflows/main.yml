@@ -41,11 +41,10 @@ jobs:
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
     
-    - name: Make workspace safe for Git
-      run: git config --global --add safe.directory /github/workspace
-    
     - name: Push changes to repo
       uses: actions-x/commit@v2
+      env:
+        GIT_CEILING_DIRECTORIES: /github/workspace
       with:
         email: behnam.mohamadzadeh21@gmail.com
         name: GitHub Actions Auto committer
