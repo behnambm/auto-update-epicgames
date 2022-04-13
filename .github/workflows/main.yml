@@ -40,17 +40,9 @@ jobs:
         python update_channel.py   
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-    
-    - name: Make dir safe
-      run: |
-        chmod 700 /github/workspace
-        git config --global --add safe.directory /github 
-        git config --global --add safe.directory /github/workspace 
 
     - name: Push changes to repo
-      uses: actions-x/commit@v2
-      env:
-        GIT_CEILING_DIRECTORIES: /github::/github/workspace
+      uses: actions-x/commit@v2.9
       with:
         email: behnam.mohamadzadeh21@gmail.com
         name: GitHub Actions Auto committer
