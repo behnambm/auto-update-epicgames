@@ -43,6 +43,7 @@ jobs:
     
     - name: Make dir safe
       run: |
+        chmod 700 /github/workspace
         git config --global --add safe.directory /github 
         git config --global --add safe.directory /github/workspace 
 
