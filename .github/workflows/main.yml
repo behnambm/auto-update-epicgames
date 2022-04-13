@@ -49,7 +49,7 @@ jobs:
     - name: Push changes to repo
       uses: actions-x/commit@v2
       env:
-        GIT_CEILING_DIRECTORIES: /github
+        GIT_CEILING_DIRECTORIES: /github::/github/workspace
       with:
         email: behnam.mohamadzadeh21@gmail.com
         name: GitHub Actions Auto committer
