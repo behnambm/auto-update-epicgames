@@ -40,7 +40,10 @@ jobs:
         python update_channel.py   
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          
+    
+    - name: Make workspace safe for Git
+      run: git config --global --add safe.directory /github/workspace
+    
     - name: Push changes to repo
       uses: actions-x/commit@v2
       with:
