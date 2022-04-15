@@ -14,34 +14,44 @@ def get_all_games(url):
     return request_json['data']['Catalog']['searchStore']['elements']
 
 
-def find_free_now(game):
-    if game['promotions'] is None or len(game['promotions']['promotionalOffers']) < 1:
+def get_game_info(game_element):
+    promotional_offer = game_element['promotions']['promotionalOffers'][0]['promotionalOffers'][0]
+    offer_end_date = datetime.strptime(promotional_offer['endDate'], '%Y-%m-%dT%H:%M:%S.%f%z')
+    offer_end_date_utc = offer_end_date.replace(tzinfo=pytz.UTC)
+
+    end_date = offer_end_date_utc.strftime('%d %B %Y')
+    end_hour = offer_end_date_utc.strftime('%H:%M')
+
+    end_datetime_str = f"{end_date} at {end_hour} - {offer_end_date_utc.tzinfo}"
+    game_url = game_base_url + game_element['catalogNs']['mappings'][0]['pageSlug']
+    return [game_element['title'], game_url, end_datetime_str]
+
+
+def is_free(game_element):
+    if not game_element['promotions']:
         return False
-    else:
-        game_date_info = game['promotions']['promotionalOffers'][0]['promotionalOffers'][0]
-        full_start_date = datetime.strptime(game_date_info['startDate'], '%Y-%m-%dT%H:%M:%S.%f%z')
+    if not game_element['promotions']['promotionalOffers']:
+        return False
 
-        full_end_date = datetime.strptime(game_date_info['endDate'], '%Y-%m-%dT%H:%M:%S.%f%z')
-        end_date = full_end_date
-        end_hour = full_end_date.time()
+    promotional_offer = game_element['promotions']['promotionalOffers'][0]['promotionalOffers'][0]
+    offer_end_date = datetime.strptime(promotional_offer['endDate'], '%Y-%m-%dT%H:%M:%S.%f%z')
+    offer_end_date_utc = offer_end_date.replace(tzinfo=pytz.UTC)
 
-        if (datetime.utcnow().replace(tzinfo=pytz.utc) < end_date and
-                game['price']['totalPrice']['fmtPrice']['intermediatePrice'] == '0'
-        ):
-            end_datetime = f"{end_date.strftime('%d %B %Y')} at {end_hour.strftime('%H:%M')} - {end_date.tzinfo}"
-            game_url = game_base_url + game['catalogNs']['mappings'][0]['pageSlug']
-            return [game['title'], game_url, end_datetime]
-        else:
-            return False
+    now = datetime.now().replace(tzinfo=pytz.UTC)
+    game_price = game_element['price']['totalPrice']['fmtPrice']['intermediatePrice']
+    if now < offer_end_date_utc and game_price == '0':
+        return True
+
+    return False
 
 
 if __name__ == '__main__':
-    all_game = get_all_games(request_url)
+    all_games = get_all_games(request_url)
     game_list = []
-    for item in all_game:
-        result = find_free_now(item)
-        if result:
-            game_list.append(result)
+    for game in all_games:
+        if is_free(game):
+            game_list.append(get_game_info(game))
+
     print(game_list)
     # write to csv file if there are new games
     if game_list:
