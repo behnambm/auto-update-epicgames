@@ -25,12 +25,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install Firefox web driver
-      run: |
-        wget https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz
-        tar xf geckodriver-v0.29.1-linux64.tar.gz
-        echo "${PWD}" >> $GITHUB_PATH
-
     - name: Run `get_games.py`
       run: |
         python get_games.py
@@ -50,9 +44,3 @@ jobs:
         files: new_games.csv old_games.csv 
         repository: https://github.com/behnambm/auto-update-epicgames
         token: ${{ secrets.GITHUB_TOKEN }}
-#         force: true
-        
-        
-        
-        
-
