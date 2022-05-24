@@ -11,7 +11,12 @@ game_base_url = "https://store.epicgames.com/en-US/p/"
 def get_all_games(url):
     res = requests.get(url)
     request_json = res.json()
-    return request_json['data']['Catalog']['searchStore']['elements']
+    elements = request_json['data']['Catalog']['searchStore']['elements']
+    free_now = []
+    for element in elements:
+        if len(element['promotions'].get('promotionalOffers', [])) > 0:
+            free_now.append(element)
+    return free_now
 
 
 def get_game_info(game_element):
@@ -23,13 +28,7 @@ def get_game_info(game_element):
     end_hour = offer_end_date_utc.strftime('%H:%M')
 
     end_datetime_str = f"{end_date} at {end_hour} - {offer_end_date_utc.tzinfo}"
-    catalog = game_element.get('catalogNs', None)
-    if not catalog:
-        return None
-    mappings = catalog.get('mappings', None)
-    if not mappings:
-        return None
-    game_url = game_base_url + catalog['mappings'][0]['pageSlug']
+    game_url = game_base_url + game_element['productSlug']
     return [game_element['title'], game_url, end_datetime_str]
 
 
@@ -55,10 +54,9 @@ if __name__ == '__main__':
     all_games = get_all_games(request_url)
     game_list = []
     for game in all_games:
-        if is_free(game):
-            game_info = get_game_info(game)
-            if game_info:
-                game_list.append()
+        game_info = get_game_info(game)
+        if game_info:
+            game_list.append(game_info)
 
     print(game_list)
     # write to csv file if there are new games
