@@ -23,7 +23,13 @@ def get_game_info(game_element):
     end_hour = offer_end_date_utc.strftime('%H:%M')
 
     end_datetime_str = f"{end_date} at {end_hour} - {offer_end_date_utc.tzinfo}"
-    game_url = game_base_url + game_element['catalogNs']['mappings'][0]['pageSlug']
+    catalog = game_element.get('catalogNs', None)
+    if not catalog:
+        return None
+    mappings = catalog.get('mappings', None)
+    if not mappings:
+        return None
+    game_url = game_base_url + catalog['mappings'][0]['pageSlug']
     return [game_element['title'], game_url, end_datetime_str]
 
 
@@ -50,7 +56,9 @@ if __name__ == '__main__':
     game_list = []
     for game in all_games:
         if is_free(game):
-            game_list.append(get_game_info(game))
+            game_info = get_game_info(game)
+            if game_info:
+                game_list.append()
 
     print(game_list)
     # write to csv file if there are new games
