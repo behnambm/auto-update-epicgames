@@ -32,24 +32,6 @@ def get_game_info(game_element):
     return [game_element['title'], game_url, end_datetime_str]
 
 
-def is_free(game_element):
-    if not game_element['promotions']:
-        return False
-    if not game_element['promotions']['promotionalOffers']:
-        return False
-
-    promotional_offer = game_element['promotions']['promotionalOffers'][0]['promotionalOffers'][0]
-    offer_end_date = datetime.strptime(promotional_offer['endDate'], '%Y-%m-%dT%H:%M:%S.%f%z')
-    offer_end_date_utc = offer_end_date.replace(tzinfo=pytz.UTC)
-
-    now = datetime.now().replace(tzinfo=pytz.UTC)
-    game_price = game_element['price']['totalPrice']['fmtPrice']['intermediatePrice']
-    if now < offer_end_date_utc and game_price == '0':
-        return True
-
-    return False
-
-
 if __name__ == '__main__':
     all_games = get_all_games(request_url)
     game_list = []
