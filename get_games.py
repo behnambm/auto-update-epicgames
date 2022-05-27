@@ -5,7 +5,7 @@ import pytz
 import requests
 
 request_url = "https://store-site-backend-static-ipv4.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=US&allowCountries=US"
-game_base_url = "https://store.epicgames.com/en-US/p/"
+game_base_url = "https://store.epicgames.com/en-US/"
 
 
 def get_all_games(url):
@@ -28,6 +28,11 @@ def get_game_info(game_element):
     end_hour = offer_end_date_utc.strftime('%H:%M')
 
     end_datetime_str = f"{end_date} at {end_hour} - {offer_end_date_utc.tzinfo}"
+    if game_element['offerType'] == 'BUNDLE':
+        global game_base_url
+        game_base_url += 'bundles/'
+    else:
+        game_base_url += 'p/'
     game_url = game_base_url + game_element['productSlug']
     return [game_element['title'], game_url, end_datetime_str]
 
