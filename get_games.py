@@ -14,6 +14,8 @@ def get_all_games(url):
     elements = request_json['data']['Catalog']['searchStore']['elements']
     free_now = []
     for element in elements:
+        if not element.get('promotions'):
+            continue
         if len(element['promotions'].get('promotionalOffers', [])) > 0:
             free_now.append(element)
     return free_now
