@@ -30,12 +30,16 @@ def get_game_info(game_element):
     end_hour = offer_end_date_utc.strftime('%H:%M')
 
     end_datetime_str = f"{end_date} at {end_hour} - {offer_end_date_utc.tzinfo}"
+    global game_base_url
+    game_base_url_ = game_base_url
     if game_element['offerType'] == 'BUNDLE':
-        global game_base_url
-        game_base_url += 'bundles/'
+        game_base_url_ += 'bundles/'
     else:
-        game_base_url += 'p/'
-    game_url = game_base_url + game_element['productSlug']
+        game_base_url_ += 'p/'
+    if game_element.get('productSlug'):
+        game_url = game_base_url_ + game_element['productSlug']
+    else:
+        game_url = game_base_url_ + game_element['catalogNs']['mappings'][0]['pageSlug']
     return [game_element['title'], game_url, end_datetime_str]
 
 
